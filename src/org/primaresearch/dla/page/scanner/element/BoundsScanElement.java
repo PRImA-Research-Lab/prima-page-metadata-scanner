@@ -1,5 +1,5 @@
 /*
- * Copyright 2014 PRImA Research Lab, University of Salford, United Kingdom
+ * Copyright 2015 PRImA Research Lab, University of Salford, United Kingdom
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,10 @@
 package org.primaresearch.dla.page.scanner.element;
 
 import org.primaresearch.dla.page.Page;
+import org.primaresearch.dla.page.layout.shared.GeometricObject;
 
 /**
- * Scan element that checks if border or print space are defined.
+ * Scan element that calculates the perimeter (polygon length) of border or print space.
  *  
  * @author Christian Clausner
  *
@@ -29,7 +30,7 @@ public class BoundsScanElement implements ScanElement {
 	public static final int TYPE_PRINT_SPACE 	= 2;
 	
 	int type;
-	boolean exists = false;
+	int perimeter = 0;
 	String[] headers = {null, "Border", "PrintSpace"};
 	
 	/**
@@ -42,10 +43,14 @@ public class BoundsScanElement implements ScanElement {
 	
 	@Override
 	public void init(Page page) {
+		GeometricObject geomObj = null;
 		if (type == TYPE_BORDER)
-			exists = page.getLayout().getBorder() != null;
+			geomObj = page.getLayout().getBorder();
 		else if (type == TYPE_PRINT_SPACE)
-			exists = page.getLayout().getPrintSpace() != null;
+			geomObj = page.getLayout().getPrintSpace();
+		
+		if (geomObj != null && geomObj.getCoords() != null)
+			perimeter = (int)(geomObj.getCoords().calculateLength()+0.5);
 	}
 
 	@Override
@@ -55,8 +60,8 @@ public class BoundsScanElement implements ScanElement {
 
 	@Override
 	public String getCsvValue() {
-		//true or false
-		return ""+exists;
+		//Integer
+		return ""+perimeter;
 	}
 
 }
