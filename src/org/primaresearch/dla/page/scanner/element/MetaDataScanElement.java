@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 PRImA Research Lab, University of Salford, United Kingdom
+ * Copyright 2019 PRImA Research Lab, University of Salford, United Kingdom
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,8 +15,8 @@
  */
 package org.primaresearch.dla.page.scanner.element;
 
-import org.primaresearch.dla.page.MetaData;
 import org.primaresearch.dla.page.Page;
+import org.primaresearch.dla.page.metadata.MetaData;
 
 /**
  * Scan element for meta data entries.
